@@ -1,0 +1,15 @@
+.env
+/myenv
+cogs/__pycache__/setup_cog.cpython-311.pyc
+cogs/__pycache__/owner.cpython-311.pyc
+cogs/__pycache__/databasecog.cpython-311.pyc
+cogs/__pycache__/guild_setup_cog.cpython-311.pyc
+cogs/__pycache__/database_cog.cpython-311.pyc
+cogs/__pycache__/autorole.cpython-311.pyc
+cogs/__pycache__/admin.cpython-311.pyc
+utils/__pycache__/config.cpython-311.pyc
+utils/data/discord_bot.log
+utils/__pycache__/logger.cpython-311.pyc
+utils/__pycache__/database_manager.cpython-311.pyc
+data/database.db
+__pycache__/bot.cpython-311.pyc

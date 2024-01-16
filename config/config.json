@@ -1,0 +1,22 @@
+{
+  "prefix": "!",
+  "database": {
+    "type": "sqlite",
+    "sqlite": {
+      "comment": "For SQLite, no connection link is needed. The database will be a local file.",
+      "db_path": "path_to_your_sqlite.db" 
+    },
+    "mysql": {
+      "comment": "MySQL configuration details",
+      "host": "your_mysql_host",
+      "port": "your_mysql_port",
+      "user": "your_mysql_user",
+      "password": "your_mysql_password",
+      "database": "your_mysql_db"
+    },
+    "mongodb": {
+      "comment": "MongoDB configuration details",
+      "connection_string": "your_mongodb_connection_string"
+    }
+  }
+}

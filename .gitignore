@@ -20,3 +20,4 @@ cogs/__pycache__/welcome.cpython-311.pyc
 cogs/__pycache__/weather_update_cog.cpython-311.pyc
 cogs/__pycache__/rps.cpython-311.pyc
 utils/__pycache__/weather_helper.cpython-311.pyc
+cogs/__pycache__/uptime.cpython-311.pyc

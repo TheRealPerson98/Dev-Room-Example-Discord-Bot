@@ -3,8 +3,7 @@
   "database": {
     "type": "sqlite",
     "sqlite": {
-      "comment": "For SQLite, no connection link is needed. The database will be a local file.",
-      "db_path": "path_to_your_sqlite.db" 
+      "comment": "For SQLite, no connection link is needed. The database will be a local file."
     },
     "mysql": {
       "comment": "MySQL configuration details",
@@ -18,5 +17,10 @@
       "comment": "MongoDB configuration details",
       "connection_string": "your_mongodb_connection_string"
     }
-  }
+  },
+  "footer": {
+    "icon_url": "https://i.imgur.com/uIb860p.png",
+    "text": "Config me daddy"
+  },
+  "statuses": ["Code", "with Person98", "with your dad!"]
 }

@@ -37,9 +37,10 @@ class DiscordBot(commands.Bot):
                     exception = f"{type(e).__name__}: {e}"
                     self.logger.error(f"Failed to load extension {extension}\n{exception}")
 
+
     @tasks.loop(minutes=1.0)
     async def status_task(self):
-        statuses = ["Code", "with Person98", "with your dad!"]
+        statuses = self.config["statuses"]
         await self.change_presence(activity=discord.Game(random.choice(statuses)))
 
     @status_task.before_loop

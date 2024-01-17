@@ -22,7 +22,25 @@ class Database:
                                 is_embed BOOLEAN DEFAULT FALSE,
                                 message TEXT
                               )''')
+            await db.execute('''CREATE TABLE IF NOT EXISTS user_messages (
+                                guild_id INTEGER,
+                                user_id INTEGER,
+                                message_count TEXT,
+                                PRIMARY KEY (guild_id, user_id)
+                              )''')
             await db.commit()
+           # New table for weather sender
+            await db.execute('''CREATE TABLE IF NOT EXISTS weather_sender (
+                                    guild_id INTEGER,
+                                    channel_id INTEGER,
+                                    city TEXT,
+                                    send_time TEXT,
+                                    timezone TEXT,
+                                    PRIMARY KEY (guild_id, channel_id)
+                                )''')
+            await db.commit()
+
+
             self.connection = db
 
         elif self.db_type == "mysql":
@@ -44,15 +62,45 @@ class Database:
                                             is_embed BOOLEAN DEFAULT FALSE,
                                             message TEXT
                                           )''')
+                    await cursor.execute('''CREATE TABLE IF NOT EXISTS user_messages (
+                                            guild_id BIGINT,
+                                            user_id BIGINT,
+                                            message_count TEXT,
+                                            PRIMARY KEY (guild_id, user_id)
+                                          )''')
                     await conn.commit()
+                    await cursor.execute('''CREATE TABLE IF NOT EXISTS weather_sender (
+                                                guild_id BIGINT,
+                                                channel_id BIGINT,
+                                                city TEXT,
+                                                send_time TEXT,
+                                                timezone TEXT,
+                                                PRIMARY KEY (guild_id, channel_id)
+                                            )''')
+                    await conn.commit()
+
+
             self.connection = pool
+
 
         elif self.db_type == "mongodb":
             mongo_config = self.config['database']['mongodb']
             client = motor.motor_asyncio.AsyncIOMotorClient(mongo_config['connection_string'])
             db = client.get_default_database()
+
+            # Creating index for 'welcome_messages' collection
             await db.welcome_messages.create_index("guild_id", unique=True)
+
+            # Creating index for 'user_messages' collection
+            user_messages_collection = db['user_messages']
+            await user_messages_collection.create_index([("guild_id", 1), ("user_id", 1)], unique=True)
+
+            # Creating index for 'weather_sender' collection
+            weather_sender_collection = db['weather_sender']
+            await weather_sender_collection.create_index([("guild_id", 1), ("channel_id", 1)], unique=True)
+
             self.connection = db
+
 
         else:
             raise ValueError(f"Unsupported database type: {self.db_type}")

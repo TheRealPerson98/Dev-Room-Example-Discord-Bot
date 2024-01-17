@@ -83,8 +83,15 @@ class LeaderboardCog(commands.Cog, name="leaderboard"):
             if set_count:
                 query = '''REPLACE INTO user_messages (guild_id, user_id, message_count) VALUES (?, ?, ?)'''
             else:
-                query = '''INSERT INTO user_messages (guild_id, user_id, message_count) VALUES (?, ?, ?)
-                           ON DUPLICATE KEY UPDATE message_count = message_count + VALUES(message_count)'''
+                if db_type == "sqlite":
+                    # SQLite compatible UPSERT
+                    query = '''INSERT INTO user_messages (guild_id, user_id, message_count) VALUES (?, ?, ?)
+                            ON CONFLICT(guild_id, user_id) DO UPDATE SET message_count = message_count + excluded.message_count'''
+                elif db_type == "mysql":
+                    # MySQL compatible UPSERT
+                    query = '''INSERT INTO user_messages (guild_id, user_id, message_count) VALUES (?, ?, ?)
+                            ON DUPLICATE KEY UPDATE message_count = message_count + VALUES(message_count)'''
+            
             await db.execute(query, (guild_id, user_id, count))
             await db.commit()
         elif db_type == "mongodb":
@@ -93,6 +100,7 @@ class LeaderboardCog(commands.Cog, name="leaderboard"):
                 await collection.update_one({'guild_id': guild_id, 'user_id': user_id}, {'$set': {'message_count': count}}, upsert=True)
             else:
                 await collection.update_one({'guild_id': guild_id, 'user_id': user_id}, {'$inc': {'message_count': count}}, upsert=True)
+
 
     
     def add_footer_to_embed(self, embed):

@@ -30,7 +30,6 @@ class WeatherUpdateCog(commands.Cog, name="weather_update"):
             try:
                 tz = pytz.timezone(timezone_str)
             except pytz.UnknownTimeZoneError:
-                print(f"Unknown timezone '{timezone_str}' for guild {guild_id}.")
                 continue
 
             send_time_local = datetime.datetime.strptime(send_time, "%H:%M")
@@ -38,7 +37,6 @@ class WeatherUpdateCog(commands.Cog, name="weather_update"):
             send_time_utc = send_time_local.astimezone(pytz.utc)
 
             if send_time_utc.time() <= utc_now.time() < (send_time_utc + datetime.timedelta(minutes=1)).time():
-                print(f"Sending weather update for {guild_id} in {channel_id}")
                 await self.send_weather_update(guild_id, channel_id)
 
 
@@ -57,12 +55,7 @@ class WeatherUpdateCog(commands.Cog, name="weather_update"):
                         embed = self.create_weather_embed(city, weather_data['current'], is_forecast=False)
                         await channel.send(embed=embed)
                     except Exception as e:
-                        print(f"Error sending weather update: {e}")
-                else:
-                    print(f"No weather data found for {city}")
-            else:
-                print(f"No city set for guild {guild_id}")
-
+                        print(e)
 
 
 
@@ -92,7 +85,6 @@ class WeatherUpdateCog(commands.Cog, name="weather_update"):
     
     @weather_update.before_loop
     async def before_weather_update(self):
-        print("Waiting for the bot to be ready...")
         await self.bot.wait_until_ready()
 
     async def get_city_for_guild(self, guild_id):

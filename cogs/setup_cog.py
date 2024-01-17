@@ -8,7 +8,7 @@ class WelcomeMessageModal(Modal):
         super().__init__(title="Welcome Message Setup")
         self.bot = bot
         self.guild_id = guild_id
-        self.add_item(TextInput(label="Welcome Message", style=discord.TextStyle.paragraph, placeholder="Enter your welcome message here"))
+        self.add_item(TextInput(label="Welcome Message", style=discord.TextStyle.paragraph, placeholder="Enter your welcome message here %username% for their username, %guildname% for the server name, and %numberjoined% for the number of members in the server."))
 
     async def on_submit(self, interaction: discord.Interaction):
         message = self.children[0].value
